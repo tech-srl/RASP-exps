@@ -237,14 +237,11 @@ class AttnTargetMakers:
 def vary_alpha_and_bos(minilangs,lang_name,lang_make,alpha_lengths=[10,26,52,100]):
 	def add_minilang(minilangs,bos,attns,alpha):
 		bos_suff = "_bos" if bos else ""
-		attns_suff = "_attns" if attns else ""
+		attns_suff = "_with_attns" if attns else ""
 		name = lang_name+"_"+str(l)+bos_suff+attns_suff
 		minilangs[name] = lambda : lang_make(Minilang_Maker(name=name,add_bos=bos,use_tgt_attns=attns),
 											alpha=alpha)
 		# add debug minilang
-		minilangs[name+"_tiny_for_debug"] = lambda : lang_make(Minilang_Maker(name=name,add_bos=bos,
-														use_tgt_attns=attns,tr=50,va=10,te=10),
-														alpha=alpha)
 		return minilangs
 		# have to do this in a function to keep all the params to Minilang_Maker in the lambda 
 		# constant once set (scoping stuff)

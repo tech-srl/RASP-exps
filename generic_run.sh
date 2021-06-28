@@ -1,17 +1,12 @@
 #!/bin/bash
-shopt -s expand_aliases
-alias python3='/usr/local/opt/python@3.8/bin/python3'
 
 # honestly this is no different from the python file at this point. only really keeping it around for loops i think?
 
-## example run: lang=palindromes ./generic_run.sh
+## example run: lang=hist2_26_bos_with_attns heads=2 layers=2 ./generic_run.sh
 
 [ -z "$lr" ] && lr=0.0003
 [ -z "$gamma" ] && gamma=0.98
 [ -z "$position" ] && position=sin # either sin or embed.
-								   # omer says sin is the more common one? 
-								   # but also maybe need embed for the kind of 
-								   # stuff we might try to do, eg BP would prefer one-hot i think
 [ -z "$attn_c" ] && attn_c=100
 [ -z "$dropout" ] && dropout=0.0
 [ -z "$reset_patience" ] && reset_patience=10
@@ -22,7 +17,7 @@ alias python3='/usr/local/opt/python@3.8/bin/python3'
 [ -z "$traincrop" ] && traincrop=0
 
 [ -z "$heads" ] && heads=1
-[ -z "$dim" ] && dim=256
+[ -z "$dim" ] && dim=128
 [ -z "$layers" ] && layers=1
 
 [ -z "$epochs" ] && epochs=50

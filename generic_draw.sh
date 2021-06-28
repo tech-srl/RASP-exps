@@ -1,6 +1,4 @@
 #!/bin/bash
-shopt -s expand_aliases
-alias python3='/usr/local/opt/python@3.8/bin/python3'
 
 # exactly zero good reasons for using this script instead of calling python directly
 # other than i got used to this and here we are

@@ -17,7 +17,7 @@ STOP, CONTINUE = 0,1
 class TransformerEncoderClassifierTrainer:
 	def __init__(self,model,lr,store_folder,lr_factor=0.5,lr_patience=2,
 		reset_patience=5,init_from_checkpoint=False,training_out=sys.stdout,\
-		optim="adam",gamma=0.9,loud=False,perfect_acc_cut=3,attn_loss_c=1):
+		optim="adam",gamma=0.9,loud=False,perfect_acc_cut=3,attn_loss_c=1,plot_every=50):
 		self.store_folder = store_folder
 		self.plots_path = self.store_folder+"/training_plots"
 		prepare_directory(self.plots_path,includes_filename=False)
@@ -32,6 +32,8 @@ class TransformerEncoderClassifierTrainer:
 		self.optim_type = optim
 		self.gamma = gamma
 		self.initial_lr = lr
+		self.plot_every = plot_every
+		self.plot_counter = 0
 		
 		if init_from_checkpoint:
 			self.load_model(keep_current_metrics=False) # load_model automatically make optims for the model
@@ -226,7 +228,10 @@ class TransformerEncoderClassifierTrainer:
 
 
 
-	def plot_vals(self):
+	def plot_vals(self,force=False):
+		self.plot_counter += 1
+		if not (force or (self.plot_counter%self.plot_every==1)):
+			return
 		filename = lambda x:self.plots_path+"/others/"+x+".png"
 		main_filename = lambda x:self.plots_path+"/"+x+".png"
 		for n in self.model.metrics:
@@ -394,7 +399,7 @@ class TransformerEncoderClassifierTrainer:
 		self.load_checkpoint() # get back to best saved model
 		self.log_final_losses(train_batches,validation_batches,test_batches)
 		self.dump_checkpoint() # dump with new info
-		self.plot_vals()
+		self.plot_vals(force=True)
 		print("\n"*4,file=self.training_out) # leave some whitespace in case this gets trained more, so its easy to look at
 		self.training_out = prev_training_out
 
